@@ -83,6 +83,30 @@ void	ft_putnbr(int n)
 
 ## puthex
 
+```C
+uintmax_t	ft_uputnbr_base(uintmax_t nbr, char *base, int fd)
+{
+	uintmax_t		i;
+	uintmax_t		size;
+	char			res[42];
+	uintmax_t		written;
+
+	if (nbr == 0)
+		return (write(fd, "0", 1));
+	size = ft_strlen(base);
+	i = 0;
+	while (nbr)
+	{
+		res[i++] = base[nbr % size];
+		nbr = nbr / size;
+	}
+	written = i;
+	while (i != 0)
+		write(fd, &res[--i], 1);
+	return (written);
+}
+```
+
 ## Syntax Token
 
 ```
