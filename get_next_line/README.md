@@ -46,6 +46,7 @@ Warning: Your function must not have any leaks, this will be checked during moul
   - `ft_puthex()`
 
 ## main
+```C
 void	pconv(char conv, int fd, t_info	*x)
 {
 	int	*counter;
@@ -90,6 +91,7 @@ int	ft_printf(const char *format, ...)
 	va_end(x.ap);
 	return (x.counter);
 }
+```
 
 ## putstr
 
