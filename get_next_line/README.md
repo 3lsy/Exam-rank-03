@@ -45,6 +45,52 @@ Warning: Your function must not have any leaks, this will be checked during moul
 - x (hexadecimal)
   - `ft_puthex()`
 
+## main
+void	pconv(char conv, int fd, t_info	*x)
+{
+	int	*counter;
+
+	counter = &x->counter;
+	if (conv == 'd')
+		*counter += ft_putnbr_base(va_arg(x->ap, int), DECIMAL, fd);
+	else if (conv == '%')
+		*counter += write(fd, "%", 1);
+	else if (conv == 's')
+		*counter += ft_putstr_fd(va_arg(x->ap, char *), fd);
+	else if (conv == 'x')
+		*counter += ft_uputnbr_base(va_arg(x->ap, unsigned int), LHEX, fd);
+}
+
+void	v_printf(const char *format, int fd, t_info *x)
+{
+	int	i;
+	int	*counter;
+
+	counter = &x->counter;
+	i = 0;
+	while (format[i])
+	{
+		if (format[i] == '%' && ft_strchr(CONVERSIONS, format[i + 1]) != NULL)
+			pconv(format[(i++) + 1], fd, x);
+		else if (format[i] == '\\' && format[i + 1])
+			*counter += write(fd, &format[i++], 2);
+		else
+			*counter += write(fd, &format[i], 1);
+		i++;
+	}
+}
+
+int	ft_printf(const char *format, ...)
+{
+	t_info	x;
+
+	x.counter = 0;
+	va_start(x.ap, format);
+	v_printf(format, 1, &x);
+	va_end(x.ap);
+	return (x.counter);
+}
+
 ## putstr
 
 ```C
